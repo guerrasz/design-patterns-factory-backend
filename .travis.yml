@@ -1,8 +1,0 @@
-language: java
-dist: jammy # Ubuntu 22.04, or 'noble' for 24.04
-
-jdk:
-  - openjdk24 # If available as a shortcut
-
-script:
-  - ./mvnw clean install
