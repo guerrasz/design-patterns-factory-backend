@@ -1,0 +1,41 @@
+services:
+  db:
+    container_name: 'postgres_db'
+    image: 'postgres:17.5-alpine3.22'
+    restart: 'always'
+    shm_size: '128mb'
+    environment:
+      POSTGRES_USER: 'dev'
+      POSTGRES_PASSWORD: 'example'
+    ports:
+      - '5432:5432'
+
+  app:
+    image: 'lucasguerras/spring-designfactory:1.5.0'
+    container_name: 'spring_app'
+    restart: 'no'
+    environment:
+      DB_HOST: 'db'
+      DB_USER: 'dev'
+      DB_PASS: 'example'
+    ports:
+      - '8080:8080'
+    links:
+      - db
+    depends_on:
+      - db
+
+  front:
+    image: 'lucasguerras/next-designfactory:1.0.0'
+    container_name: 'next_app'
+    restart: 'no'
+    environment:
+      API_ENDPOINT: 'app'
+    ports:
+      - '3000:3000'
+    links:
+      - app
+    depends_on:
+      - app
+
+
